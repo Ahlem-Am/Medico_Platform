@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+    web:
+        image: web
+        ports: 
+        - "3030:3030"
+      
+    medicalrecord:
+      image: medical_record
+      ports:
+        - "3000:3000"
+    auth:
+      build: ./Auth
+      ports:
+        - "80:80"
+    diseaseprediction:
+      image: disease_prediction
+      ports:
+        - "8000:8000"
+    nginx:
+      image: nginx:1.23.3
+      ports:
+        - "8080:8080"
+      volumes:
+        - ./web/public:/srv/www/static
+
+        - ./default.conf:/etc/nginx/conf.d/default.conf
+      depends_on:
+        - web
+        - medicalrecord
+        - diseaseprediction
+        
+    
+
+    
+
